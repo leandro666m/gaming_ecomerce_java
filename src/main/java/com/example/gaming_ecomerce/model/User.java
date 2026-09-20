@@ -3,6 +3,7 @@ package com.example.gaming_ecomerce.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,13 +34,12 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    // RELACIONES
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Wishlist wishlist;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Address> addresses;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Order> orders;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
 }

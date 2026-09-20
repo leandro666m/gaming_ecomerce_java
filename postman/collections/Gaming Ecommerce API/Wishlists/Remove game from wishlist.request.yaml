@@ -1,0 +1,4 @@
+$kind: http-request
+method: DELETE
+url: '{{baseUrl}}/wishlists/{{wishlistId}}/games/{{gameId}}'
+order: 6000

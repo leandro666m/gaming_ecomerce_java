@@ -3,6 +3,10 @@ package com.example.gaming_ecomerce.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "orders")
 @Getter
@@ -16,22 +20,34 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "total_payment", nullable = false)
-    private Double totalPayment;
+    @Column(name = "total_payment", nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalPayment;
 
-    @Column(name = "id_payment")
+    @Column(name = "payment_id")
     private String idPayment;
 
-    // En Strapi esto estaba como JSON. Podemos guardarlo como texto JSON
-    // o más adelante crear entidades dedicadas, por ahora usamos String
-    @Column(name = "address_shipping", columnDefinition = "TEXT")
-    private String addressShipping;
+    @Column(name = "shipping_name")
+    private String shippingName;
 
-    @Column(columnDefinition = "TEXT")
-    private String products;
+    @Column(name = "shipping_address")
+    private String shippingAddress;
 
-    // RELACIONES
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "shipping_city")
+    private String shippingCity;
+
+    @Column(name = "shipping_state")
+    private String shippingState;
+
+    @Column(name = "shipping_postal_code")
+    private String shippingPostalCode;
+
+    @Column(name = "shipping_phone")
+    private String shippingPhone;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
 }

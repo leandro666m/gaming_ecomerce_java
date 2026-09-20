@@ -1,0 +1,4 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/addresses/{{addressId}}'
+order: 2000

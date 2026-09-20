@@ -1,0 +1,30 @@
+$kind: collection
+name: Gaming Ecommerce API
+description: Coleccion completa de endpoints de la aplicacion.
+variables:
+  - key: baseUrl
+    value: 'http://localhost:8080/api'
+  - key: userId
+    value: '1'
+  - key: addressId
+    value: '1'
+  - key: platformId
+    value: '1'
+  - key: gameId
+    value: '1'
+  - key: wishlistId
+    value: '1'
+  - key: orderId
+    value: '1'
+  - key: orderItemId
+    value: '1'
+  - key: username
+    value: player01
+  - key: email
+    value: player01@example.com
+  - key: platformSlug
+    value: playstation-5
+  - key: gameSlug
+    value: the-last-of-us-part-ii
+  - key: paymentId
+    value: PAY-001

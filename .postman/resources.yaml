@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: 7f54f62d-d493-4b2f-8b53-5a212f6489ec
+
+localResources:
+  collections:
+    - ../Gaming Ecommerce API
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../Gaming Ecommerce API: b3e2d1e5-7c11-4f6e-9a0e-gaming-ecommerce

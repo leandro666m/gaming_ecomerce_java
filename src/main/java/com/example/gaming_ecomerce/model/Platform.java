@@ -3,6 +3,7 @@ package com.example.gaming_ecomerce.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,6 @@ public class Platform {
     @Column(nullable = false, unique = true)
     private String slug;
 
-    // RELACIONES
-    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL)
-    private List<Game> games;
+    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Game> games = new ArrayList<>();
 }

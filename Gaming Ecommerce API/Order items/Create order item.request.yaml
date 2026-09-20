@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/orders/{{orderId}}/games/{{gameId}}/items"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "quantity": 2,
+      "unitPrice": 59.99,
+      "subtotal": 119.98,
+      "discount": 0
+    }
+order: 5000

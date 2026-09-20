@@ -1,0 +1,350 @@
+{
+  "info": {
+    "_postman_id": "b3e2d1e5-7c11-4f6e-9a0e-gaming-ecommerce",
+    "name": "Gaming Ecommerce API",
+    "description": "Coleccion completa de endpoints de la aplicacion.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" },
+    { "key": "userId", "value": "1" },
+    { "key": "addressId", "value": "1" },
+    { "key": "platformId", "value": "1" },
+    { "key": "gameId", "value": "1" },
+    { "key": "wishlistId", "value": "1" },
+    { "key": "orderId", "value": "1" },
+    { "key": "orderItemId", "value": "1" },
+    { "key": "username", "value": "player01" },
+    { "key": "email", "value": "player01@example.com" },
+    { "key": "platformSlug", "value": "playstation-5" },
+    { "key": "gameSlug", "value": "the-last-of-us-part-ii" },
+    { "key": "paymentId", "value": "PAY-001" }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users" }
+        },
+        {
+          "name": "Get user by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}" }
+        },
+        {
+          "name": "Get user by username",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/username/{{username}}" }
+        },
+        {
+          "name": "Get user by email",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/email/{{email}}" }
+        },
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"player01\",\n  \"email\": \"player01@example.com\",\n  \"password\": \"secret123\",\n  \"firstName\": \"Player\",\n  \"lastName\": \"One\"\n}"
+            },
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"player01\",\n  \"email\": \"player01@example.com\",\n  \"password\": \"secret123\",\n  \"firstName\": \"Updated\",\n  \"lastName\": \"Player\"\n}"
+            },
+            "url": "{{baseUrl}}/users/{{userId}}"
+          }
+        },
+        {
+          "name": "Delete user",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/users/{{userId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Addresses",
+      "item": [
+        {
+          "name": "Get all addresses",
+          "request": { "method": "GET", "url": "{{baseUrl}}/addresses" }
+        },
+        {
+          "name": "Get address by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/addresses/{{addressId}}" }
+        },
+        {
+          "name": "Get addresses by user",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/addresses" }
+        },
+        {
+          "name": "Create address for user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Casa\",\n  \"address\": \"Av. Siempre Viva 123\",\n  \"city\": \"Buenos Aires\",\n  \"state\": \"Buenos Aires\",\n  \"postalCode\": \"C1000\",\n  \"phone\": \"+5491122334455\"\n}"
+            },
+            "url": "{{baseUrl}}/users/{{userId}}/addresses"
+          }
+        },
+        {
+          "name": "Update address",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Casa actualizada\",\n  \"address\": \"Av. Siempre Viva 456\",\n  \"city\": \"Buenos Aires\",\n  \"state\": \"Buenos Aires\",\n  \"postalCode\": \"C1000\",\n  \"phone\": \"+5491122334455\"\n}"
+            },
+            "url": "{{baseUrl}}/addresses/{{addressId}}"
+          }
+        },
+        {
+          "name": "Delete address",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/addresses/{{addressId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Platforms",
+      "item": [
+        {
+          "name": "Get all platforms",
+          "request": { "method": "GET", "url": "{{baseUrl}}/platforms" }
+        },
+        {
+          "name": "Get platform by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/platforms/{{platformId}}" }
+        },
+        {
+          "name": "Get platform by slug",
+          "request": { "method": "GET", "url": "{{baseUrl}}/platforms/slug/{{platformSlug}}" }
+        },
+        {
+          "name": "Create platform",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PlayStation 5\",\n  \"slug\": \"playstation-5\"\n}"
+            },
+            "url": "{{baseUrl}}/platforms"
+          }
+        },
+        {
+          "name": "Update platform",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PlayStation 5 Updated\",\n  \"slug\": \"playstation-5-updated\"\n}"
+            },
+            "url": "{{baseUrl}}/platforms/{{platformId}}"
+          }
+        },
+        {
+          "name": "Delete platform",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/platforms/{{platformId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Games",
+      "item": [
+        {
+          "name": "Get all games",
+          "request": { "method": "GET", "url": "{{baseUrl}}/games" }
+        },
+        {
+          "name": "Get game by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/games/{{gameId}}" }
+        },
+        {
+          "name": "Get game by slug",
+          "request": { "method": "GET", "url": "{{baseUrl}}/games/slug/{{gameSlug}}" }
+        },
+        {
+          "name": "Get games by platform",
+          "request": { "method": "GET", "url": "{{baseUrl}}/platforms/{{platformId}}/games" }
+        },
+        {
+          "name": "Create game for platform",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Last of Us Part II\",\n  \"slug\": \"the-last-of-us-part-ii\",\n  \"price\": 59.99,\n  \"summary\": \"Action-adventure game\",\n  \"video\": \"https://example.com/video\",\n  \"cover\": \"https://example.com/cover.jpg\",\n  \"wallpaper\": \"https://example.com/wallpaper.jpg\",\n  \"screenshots\": [\"https://example.com/screenshot-1.jpg\"],\n  \"discount\": 0,\n  \"releaseDate\": \"2020-06-19\",\n  \"platformId\": {{platformId}}\n}"
+            },
+            "url": "{{baseUrl}}/platforms/{{platformId}}/games"
+          }
+        },
+        {
+          "name": "Update game",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Last of Us Part II Updated\",\n  \"slug\": \"the-last-of-us-part-ii\",\n  \"price\": 49.99,\n  \"summary\": \"Updated description\",\n  \"video\": \"https://example.com/video\",\n  \"cover\": \"https://example.com/cover.jpg\",\n  \"wallpaper\": \"https://example.com/wallpaper.jpg\",\n  \"screenshots\": [],\n  \"discount\": 10,\n  \"releaseDate\": \"2020-06-19\",\n  \"platformId\": {{platformId}}\n}"
+            },
+            "url": "{{baseUrl}}/games/{{gameId}}"
+          }
+        },
+        {
+          "name": "Delete game",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/games/{{gameId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Wishlists",
+      "item": [
+        {
+          "name": "Get all wishlists",
+          "request": { "method": "GET", "url": "{{baseUrl}}/wishlists" }
+        },
+        {
+          "name": "Get wishlist by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/wishlists/{{wishlistId}}" }
+        },
+        {
+          "name": "Get wishlist by user",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/wishlist" }
+        },
+        {
+          "name": "Create wishlist for user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gameIds\": [{{gameId}}]\n}"
+            },
+            "url": "{{baseUrl}}/users/{{userId}}/wishlist"
+          }
+        },
+        {
+          "name": "Add game to wishlist",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/wishlists/{{wishlistId}}/games/{{gameId}}"
+          }
+        },
+        {
+          "name": "Remove game from wishlist",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/wishlists/{{wishlistId}}/games/{{gameId}}"
+          }
+        },
+        {
+          "name": "Delete wishlist",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/wishlists/{{wishlistId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Get all orders",
+          "request": { "method": "GET", "url": "{{baseUrl}}/orders" }
+        },
+        {
+          "name": "Get order by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/orders/{{orderId}}" }
+        },
+        {
+          "name": "Get orders by user",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/orders" }
+        },
+        {
+          "name": "Get recent orders by user",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/orders/recent" }
+        },
+        {
+          "name": "Get order by payment id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/orders/payment/{{paymentId}}" }
+        },
+        {
+          "name": "Create order for user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"totalPayment\": 119.98,\n  \"paymentId\": \"PAY-001\",\n  \"shippingName\": \"Player One\",\n  \"shippingAddress\": \"Av. Siempre Viva 123\",\n  \"shippingCity\": \"Buenos Aires\",\n  \"shippingState\": \"Buenos Aires\",\n  \"shippingPostalCode\": \"C1000\",\n  \"shippingPhone\": \"+5491122334455\"\n}"
+            },
+            "url": "{{baseUrl}}/users/{{userId}}/orders"
+          }
+        },
+        {
+          "name": "Update order",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"totalPayment\": 99.99,\n  \"paymentId\": \"PAY-001-UPDATED\",\n  \"shippingName\": \"Player One\",\n  \"shippingAddress\": \"Av. Siempre Viva 456\",\n  \"shippingCity\": \"Buenos Aires\",\n  \"shippingState\": \"Buenos Aires\",\n  \"shippingPostalCode\": \"C1000\",\n  \"shippingPhone\": \"+5491122334455\"\n}"
+            },
+            "url": "{{baseUrl}}/orders/{{orderId}}"
+          }
+        },
+        {
+          "name": "Delete order",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/orders/{{orderId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Order items",
+      "item": [
+        {
+          "name": "Get all order items",
+          "request": { "method": "GET", "url": "{{baseUrl}}/order-items" }
+        },
+        {
+          "name": "Get order item by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/order-items/{{orderItemId}}" }
+        },
+        {
+          "name": "Get items by order",
+          "request": { "method": "GET", "url": "{{baseUrl}}/orders/{{orderId}}/items" }
+        },
+        {
+          "name": "Get items by game",
+          "request": { "method": "GET", "url": "{{baseUrl}}/games/{{gameId}}/order-items" }
+        },
+        {
+          "name": "Create order item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2,\n  \"unitPrice\": 59.99,\n  \"subtotal\": 119.98,\n  \"discount\": 0\n}"
+            },
+            "url": "{{baseUrl}}/orders/{{orderId}}/games/{{gameId}}/items"
+          }
+        },
+        {
+          "name": "Delete order item",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/order-items/{{orderItemId}}" }
+        }
+      ]
+    }
+  ]
+}

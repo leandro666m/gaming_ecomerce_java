@@ -1,0 +1,14 @@
+$kind: http-request
+method: POST
+url: '{{baseUrl}}/platforms'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "PlayStation 5",
+      "slug": "playstation-5"
+    }

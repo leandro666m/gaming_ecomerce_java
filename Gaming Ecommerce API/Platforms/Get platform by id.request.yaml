@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/platforms/{{platformId}}"
+method: GET
+order: 2000

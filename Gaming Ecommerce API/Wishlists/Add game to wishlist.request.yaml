@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/wishlists/{{wishlistId}}/games/{{gameId}}"
+method: POST
+order: 5000

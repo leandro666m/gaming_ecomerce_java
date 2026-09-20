@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/platforms/{{platformId}}"
+method: DELETE
+order: 6000

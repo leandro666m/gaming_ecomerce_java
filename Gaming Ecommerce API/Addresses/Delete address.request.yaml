@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/addresses/{{addressId}}"
+method: DELETE
+order: 6000

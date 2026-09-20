@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/platforms/{{platformId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "PlayStation 5 Updated",
+      "slug": "playstation-5-updated"
+    }
+order: 5000

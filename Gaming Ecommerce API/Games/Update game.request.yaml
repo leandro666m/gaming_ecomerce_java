@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/games/{{gameId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "The Last of Us Part II Updated",
+      "slug": "the-last-of-us-part-ii",
+      "price": 49.99,
+      "summary": "Updated description",
+      "video": "https://example.com/video",
+      "cover": "https://example.com/cover.jpg",
+      "wallpaper": "https://example.com/wallpaper.jpg",
+      "screenshots": [],
+      "discount": 10,
+      "releaseDate": "2020-06-19",
+      "platformId": {{platformId}}
+    }
+order: 6000

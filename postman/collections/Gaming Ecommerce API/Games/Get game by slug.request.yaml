@@ -1,0 +1,4 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/games/slug/{{gameSlug}}'
+order: 3000

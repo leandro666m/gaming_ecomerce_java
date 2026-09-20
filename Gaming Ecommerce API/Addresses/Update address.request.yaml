@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/addresses/{{addressId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Casa actualizada",
+      "address": "Av. Siempre Viva 456",
+      "city": "Buenos Aires",
+      "state": "Buenos Aires",
+      "postalCode": "C1000",
+      "phone": "+5491122334455"
+    }
+order: 5000

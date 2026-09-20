@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/orders/{{orderId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "totalPayment": 99.99,
+      "paymentId": "PAY-001-UPDATED",
+      "shippingName": "Player One",
+      "shippingAddress": "Av. Siempre Viva 456",
+      "shippingCity": "Buenos Aires",
+      "shippingState": "Buenos Aires",
+      "shippingPostalCode": "C1000",
+      "shippingPhone": "+5491122334455"
+    }
+order: 7000

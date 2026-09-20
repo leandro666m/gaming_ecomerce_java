@@ -1,0 +1,16 @@
+$kind: collection
+description: Coleccion completa de endpoints de la aplicacion.
+variables:
+  baseUrl: http://localhost:8080/api
+  userId: "1"
+  addressId: "1"
+  platformId: "1"
+  gameId: "1"
+  wishlistId: "1"
+  orderId: "1"
+  orderItemId: "1"
+  username: player01
+  email: player01@example.com
+  platformSlug: playstation-5
+  gameSlug: the-last-of-us-part-ii
+  paymentId: PAY-001

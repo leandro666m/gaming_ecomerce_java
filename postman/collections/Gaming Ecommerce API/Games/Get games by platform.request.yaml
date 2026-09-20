@@ -1,0 +1,4 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/platforms/{{platformId}}/games'
+order: 4000
