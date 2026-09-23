@@ -77,7 +77,9 @@ public class PlatformController {
         return new PlatformResponse(
                 platform.getId(),
                 platform.getName(),
-                platform.getSlug()
+                platform.getSlug(),
+                platform.getDisplay_order(),
+                platform.getIconUrl()
         );
     }
 }

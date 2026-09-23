@@ -25,6 +25,12 @@ public class Platform {
     @Column(nullable = false, unique = true)
     private String slug;
 
+    @Column(nullable = false, unique = true)
+    private Integer display_order;
+
+    @Column(columnDefinition = "TEXT")
+    private String iconUrl;
+
     @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Game> games = new ArrayList<>();
 }

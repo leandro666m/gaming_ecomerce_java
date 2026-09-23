@@ -18,4 +18,11 @@ public class PlatformRequest {
     @NotBlank(message = "El slug es obligatorio")
     @Size(max = 100, message = "El slug no puede exceder 100 caracteres")
     private String slug;
+
+    @NotBlank(message = "El orden es obligatorio")
+    @Size(max = 100, message = "El orden no puede exceder 100 caracteres")
+    private Integer display_order;
+
+    @Size(max = 1000, message = "La URL del ícono no puede exceder 1000 caracteres")
+    private String iconUrl;
 }

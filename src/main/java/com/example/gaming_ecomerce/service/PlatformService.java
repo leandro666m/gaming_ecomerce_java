@@ -40,6 +40,8 @@ public class PlatformService {
 
         platform.setName(updatedPlatform.getName());
         platform.setSlug(updatedPlatform.getSlug());
+        platform.setDisplay_order(updatedPlatform.getDisplay_order());
+        platform.setIconUrl(updatedPlatform.getIconUrl());
 
         return platformRepository.save(platform);
     }

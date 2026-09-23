@@ -12,4 +12,6 @@ public class PlatformResponse {
     private Long id;
     private String name;
     private String slug;
+    private Integer display_order;
+    private String iconUrl;
 }
