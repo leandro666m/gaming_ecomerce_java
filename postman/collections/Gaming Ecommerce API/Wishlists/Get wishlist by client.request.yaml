@@ -1,4 +1,0 @@
-$kind: http-request
-method: GET
-url: '{{baseUrl}}/clients/{{clientId}}/wishlist'
-order: 3000

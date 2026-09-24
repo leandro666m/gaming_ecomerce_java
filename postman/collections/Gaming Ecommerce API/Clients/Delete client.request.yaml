@@ -1,4 +1,0 @@
-$kind: http-request
-method: DELETE
-url: '{{baseUrl}}/clients/{{clientId}}'
-order: 7000
