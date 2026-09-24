@@ -13,4 +13,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     Optional<Game> findBySlug(String slug);
 
     List<Game> findByPlatformId(Long platformId);
+
+    boolean existsByPlatformId(Long platformId);
 }

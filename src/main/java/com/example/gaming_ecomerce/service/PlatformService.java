@@ -1,6 +1,7 @@
 package com.example.gaming_ecomerce.service;
 
 import com.example.gaming_ecomerce.model.Platform;
+import com.example.gaming_ecomerce.repository.GameRepository;
 import com.example.gaming_ecomerce.repository.PlatformRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +13,11 @@ import java.util.Optional;
 public class PlatformService {
 
     private final PlatformRepository platformRepository;
+    private final GameRepository gameRepository;
 
-    public PlatformService(PlatformRepository platformRepository) {
+    public PlatformService(PlatformRepository platformRepository, GameRepository gameRepository) {
         this.platformRepository = platformRepository;
+        this.gameRepository = gameRepository;
     }
 
     public List<Platform> findAll() {
@@ -46,7 +49,11 @@ public class PlatformService {
         return platformRepository.save(platform);
     }
 
+    @Transactional
     public void deleteById(Long id) {
+        if (gameRepository.existsByPlatformId(id)) {
+            throw new IllegalStateException("No se puede eliminar una plataforma con juegos asociados");
+        }
         platformRepository.deleteById(id);
     }
 }

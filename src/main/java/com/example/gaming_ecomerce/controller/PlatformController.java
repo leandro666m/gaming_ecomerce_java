@@ -46,10 +46,16 @@ public class PlatformController {
 
     @PostMapping
     public ResponseEntity<PlatformResponse> createPlatform(@Valid @RequestBody PlatformRequest request) {
-        Platform platform = new Platform();
-        platform.setName(request.getName());
-        platform.setSlug(request.getSlug());
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(platformService.save(platform)));
+        try{
+            Platform platform = new Platform();
+            platform.setName(request.getName());
+            platform.setSlug(request.getSlug());
+            platform.setDisplay_order(request.getDisplay_order());
+            platform.setIconUrl(request.getIconUrl());
+            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(platformService.save(platform)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}")
@@ -58,6 +64,8 @@ public class PlatformController {
             Platform platform = new Platform();
             platform.setName(request.getName());
             platform.setSlug(request.getSlug());
+            platform.setDisplay_order(request.getDisplay_order());
+            platform.setIconUrl(request.getIconUrl());
             return ResponseEntity.ok(toResponse(platformService.update(id, platform)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -69,8 +77,12 @@ public class PlatformController {
         if (platformService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        platformService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        try {
+            platformService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
     private PlatformResponse toResponse(Platform platform) {
