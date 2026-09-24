@@ -36,15 +36,15 @@ public class AddressController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/users/{userId}/addresses")
-    public ResponseEntity<List<AddressResponse>> getAddressesByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(addressService.findByUserId(userId).stream()
+    @GetMapping("/clients/{clientId}/addresses")
+    public ResponseEntity<List<AddressResponse>> getAddressesByClient(@PathVariable Long clientId) {
+        return ResponseEntity.ok(addressService.findByClientId(clientId).stream()
                 .map(this::toResponse)
                 .toList());
     }
 
-    @PostMapping("/users/{userId}/addresses")
-    public ResponseEntity<AddressResponse> createAddress(@PathVariable Long userId, @Valid @RequestBody AddressRequest request) {
+    @PostMapping("/clients/{clientId}/addresses")
+    public ResponseEntity<AddressResponse> createAddress(@PathVariable Long clientId, @Valid @RequestBody AddressRequest request) {
         try {
             Address address = new Address();
             address.setName(request.getName());
@@ -53,7 +53,7 @@ public class AddressController {
             address.setState(request.getState());
             address.setPostalCode(request.getPostalCode());
             address.setPhone(request.getPhone());
-            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(addressService.save(userId, address)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(addressService.save(clientId, address)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
@@ -93,7 +93,7 @@ public class AddressController {
                 address.getState(),
                 address.getPostalCode(),
                 address.getPhone(),
-                address.getUser() != null ? address.getUser().getId() : null
+                address.getClient() != null ? address.getClient().getId() : null
         );
     }
 }

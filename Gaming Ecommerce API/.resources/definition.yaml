@@ -2,7 +2,7 @@ $kind: collection
 description: Coleccion completa de endpoints de la aplicacion.
 variables:
   baseUrl: http://localhost:8080/api
-  userId: "1"
+  clientId: "1"
   addressId: "1"
   platformId: "1"
   gameId: "1"

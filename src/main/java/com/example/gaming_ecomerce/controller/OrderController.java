@@ -38,16 +38,16 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/users/{userId}/orders")
-    public ResponseEntity<List<OrderResponse>> getOrdersByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(orderService.findByUserId(userId).stream()
+    @GetMapping("/clients/{clientId}/orders")
+    public ResponseEntity<List<OrderResponse>> getOrdersByClient(@PathVariable Long clientId) {
+        return ResponseEntity.ok(orderService.findByClientId(clientId).stream()
                 .map(this::toResponse)
                 .toList());
     }
 
-    @GetMapping("/users/{userId}/orders/recent")
-    public ResponseEntity<List<OrderResponse>> getRecentOrdersByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(orderService.findByUserIdOrderByIdDesc(userId).stream()
+    @GetMapping("/clients/{clientId}/orders/recent")
+    public ResponseEntity<List<OrderResponse>> getRecentOrdersByClient(@PathVariable Long clientId) {
+        return ResponseEntity.ok(orderService.findByClientIdOrderByIdDesc(clientId).stream()
                 .map(this::toResponse)
                 .toList());
     }
@@ -60,8 +60,8 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/users/{userId}/orders")
-    public ResponseEntity<OrderResponse> createOrder(@PathVariable Long userId, @Valid @RequestBody OrderRequest request) {
+    @PostMapping("/clients/{clientId}/orders")
+    public ResponseEntity<OrderResponse> createOrder(@PathVariable Long clientId, @Valid @RequestBody OrderRequest request) {
         try {
             Order order = new Order();
             order.setTotalPayment(request.getTotalPayment());
@@ -72,7 +72,7 @@ public class OrderController {
             order.setShippingState(request.getShippingState());
             order.setShippingPostalCode(request.getShippingPostalCode());
             order.setShippingPhone(request.getShippingPhone());
-            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(orderService.save(userId, order)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(orderService.save(clientId, order)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
@@ -128,7 +128,7 @@ public class OrderController {
                 order.getShippingState(),
                 order.getShippingPostalCode(),
                 order.getShippingPhone(),
-                order.getUser() != null ? order.getUser().getId() : null,
+                order.getClient() != null ? order.getClient().getId() : null,
                 items
         );
     }

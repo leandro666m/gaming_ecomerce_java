@@ -1,0 +1,17 @@
+$kind: http-request
+method: PUT
+url: '{{baseUrl}}/clients/{{clientId}}'
+order: 6000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "username": "player01",
+      "email": "player01@example.com",
+      "password": "secret123",
+      "firstName": "Updated",
+      "lastName": "Player"
+    }

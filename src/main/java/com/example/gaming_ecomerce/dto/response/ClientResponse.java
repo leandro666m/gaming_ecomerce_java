@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WishlistResponse {
+public class ClientResponse {
 
     private Long id;
-    private Long clientId;
-    private List<Long> gameIds;
+    private String username;
+    private String email;
+    private String firstName;
+    private String lastName;
 }

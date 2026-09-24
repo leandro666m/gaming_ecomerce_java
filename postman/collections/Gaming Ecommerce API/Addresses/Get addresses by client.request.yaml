@@ -1,0 +1,4 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/clients/{{clientId}}/addresses'
+order: 3000

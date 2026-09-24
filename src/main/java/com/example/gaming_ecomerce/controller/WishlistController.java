@@ -36,16 +36,16 @@ public class WishlistController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/users/{userId}/wishlist")
-    public ResponseEntity<WishlistResponse> getWishlistByUser(@PathVariable Long userId) {
-        return wishlistService.findByUserId(userId)
+    @GetMapping("/clients/{clientId}/wishlist")
+    public ResponseEntity<WishlistResponse> getWishlistByClient(@PathVariable Long clientId) {
+        return wishlistService.findByClientId(clientId)
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/users/{userId}/wishlist")
-    public ResponseEntity<WishlistResponse> createWishlist(@PathVariable Long userId, @Valid @RequestBody WishlistRequest request) {
+    @PostMapping("/clients/{clientId}/wishlist")
+    public ResponseEntity<WishlistResponse> createWishlist(@PathVariable Long clientId, @Valid @RequestBody WishlistRequest request) {
         try {
             Wishlist wishlist = new Wishlist();
             if (request.getGameIds() != null && !request.getGameIds().isEmpty()) {
@@ -56,7 +56,7 @@ public class WishlistController {
                     wishlist.getGames().add(game);
                 });
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(wishlistService.save(userId, wishlist)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(wishlistService.save(clientId, wishlist)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
@@ -97,7 +97,7 @@ public class WishlistController {
 
         return new WishlistResponse(
                 wishlist.getId(),
-                wishlist.getUser() != null ? wishlist.getUser().getId() : null,
+                wishlist.getClient() != null ? wishlist.getClient().getId() : null,
                 gameIds
         );
     }

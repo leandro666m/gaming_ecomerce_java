@@ -4,7 +4,7 @@ description: Coleccion completa de endpoints de la aplicacion.
 variables:
   - key: baseUrl
     value: 'http://localhost:8080/api'
-  - key: userId
+  - key: clientId
     value: '1'
   - key: addressId
     value: '1'

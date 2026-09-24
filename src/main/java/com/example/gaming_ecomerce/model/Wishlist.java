@@ -20,8 +20,8 @@ public class Wishlist {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
-    private User user;
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, unique = true)
+    private Client client;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

@@ -1,9 +1,9 @@
 package com.example.gaming_ecomerce.service;
 
 import com.example.gaming_ecomerce.model.Order;
-import com.example.gaming_ecomerce.model.User;
+import com.example.gaming_ecomerce.model.Client;
 import com.example.gaming_ecomerce.repository.OrderRepository;
-import com.example.gaming_ecomerce.repository.UserRepository;
+import com.example.gaming_ecomerce.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +14,11 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
-    public OrderService(OrderRepository orderRepository, UserRepository userRepository) {
+    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
     }
 
     public List<Order> findAll() {
@@ -29,12 +29,12 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-    public List<Order> findByUserId(Long userId) {
-        return orderRepository.findByUserId(userId);
+    public List<Order> findByClientId(Long clientId) {
+        return orderRepository.findByClientId(clientId);
     }
 
-    public List<Order> findByUserIdOrderByIdDesc(Long userId) {
-        return orderRepository.findByUserIdOrderByIdDesc(userId);
+    public List<Order> findByClientIdOrderByIdDesc(Long clientId) {
+        return orderRepository.findByClientIdOrderByIdDesc(clientId);
     }
 
     public Optional<Order> findByIdPayment(String idPayment) {
@@ -42,10 +42,10 @@ public class OrderService {
     }
 
     @Transactional
-    public Order save(Long userId, Order order) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + userId));
-        order.setUser(user);
+    public Order save(Long clientId, Order order) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con id: " + clientId));
+        order.setClient(client);
         return orderRepository.save(order);
     }
 

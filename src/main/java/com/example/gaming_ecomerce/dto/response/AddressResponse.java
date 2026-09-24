@@ -16,5 +16,5 @@ public class AddressResponse {
     private String state;
     private String postalCode;
     private String phone;
-    private Long userId;
+    private Long clientId;
 }

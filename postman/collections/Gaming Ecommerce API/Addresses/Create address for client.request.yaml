@@ -1,0 +1,18 @@
+$kind: http-request
+method: POST
+url: '{{baseUrl}}/clients/{{clientId}}/addresses'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Casa",
+      "address": "Av. Siempre Viva 123",
+      "city": "Buenos Aires",
+      "state": "Buenos Aires",
+      "postalCode": "C1000",
+      "phone": "+5491122334455"
+    }

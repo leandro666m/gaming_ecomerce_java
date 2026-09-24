@@ -1,9 +1,9 @@
 package com.example.gaming_ecomerce.service;
 
 import com.example.gaming_ecomerce.model.Address;
-import com.example.gaming_ecomerce.model.User;
+import com.example.gaming_ecomerce.model.Client;
 import com.example.gaming_ecomerce.repository.AddressRepository;
-import com.example.gaming_ecomerce.repository.UserRepository;
+import com.example.gaming_ecomerce.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +14,11 @@ import java.util.Optional;
 public class AddressService {
 
     private final AddressRepository addressRepository;
-    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
-    public AddressService(AddressRepository addressRepository, UserRepository userRepository) {
+    public AddressService(AddressRepository addressRepository, ClientRepository clientRepository) {
         this.addressRepository = addressRepository;
-        this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
     }
 
     public List<Address> findAll() {
@@ -29,15 +29,15 @@ public class AddressService {
         return addressRepository.findById(id);
     }
 
-    public List<Address> findByUserId(Long userId) {
-        return addressRepository.findByUserId(userId);
+    public List<Address> findByClientId(Long clientId) {
+        return addressRepository.findByClientId(clientId);
     }
 
     @Transactional
-    public Address save(Long userId, Address address) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + userId));
-        address.setUser(user);
+    public Address save(Long clientId, Address address) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con id: " + clientId));
+        address.setClient(client);
         return addressRepository.save(address);
     }
 

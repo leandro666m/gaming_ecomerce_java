@@ -21,6 +21,6 @@ public class OrderResponse {
     private String shippingState;
     private String shippingPostalCode;
     private String shippingPhone;
-    private Long userId;
+    private Long clientId;
     private List<OrderItemResponse> items;
 }

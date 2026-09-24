@@ -7,7 +7,7 @@
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:8080/api" },
-    { "key": "userId", "value": "1" },
+    { "key": "clientId", "value": "1" },
     { "key": "addressId", "value": "1" },
     { "key": "platformId", "value": "1" },
     { "key": "gameId", "value": "1" },
@@ -22,26 +22,26 @@
   ],
   "item": [
     {
-      "name": "Users",
+      "name": "Clients",
       "item": [
         {
-          "name": "Get all users",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users" }
+          "name": "Get all clients",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients" }
         },
         {
-          "name": "Get user by id",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}" }
+          "name": "Get client by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients/{{clientId}}" }
         },
         {
-          "name": "Get user by username",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users/username/{{username}}" }
+          "name": "Get client by username",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients/username/{{username}}" }
         },
         {
-          "name": "Get user by email",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users/email/{{email}}" }
+          "name": "Get client by email",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients/email/{{email}}" }
         },
         {
-          "name": "Create user",
+          "name": "Create client",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
@@ -49,11 +49,11 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"player01\",\n  \"email\": \"player01@example.com\",\n  \"password\": \"secret123\",\n  \"firstName\": \"Player\",\n  \"lastName\": \"One\"\n}"
             },
-            "url": "{{baseUrl}}/users"
+            "url": "{{baseUrl}}/clients"
           }
         },
         {
-          "name": "Update user",
+          "name": "Update client",
           "request": {
             "method": "PUT",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
@@ -61,12 +61,12 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"player01\",\n  \"email\": \"player01@example.com\",\n  \"password\": \"secret123\",\n  \"firstName\": \"Updated\",\n  \"lastName\": \"Player\"\n}"
             },
-            "url": "{{baseUrl}}/users/{{userId}}"
+            "url": "{{baseUrl}}/clients/{{clientId}}"
           }
         },
         {
-          "name": "Delete user",
-          "request": { "method": "DELETE", "url": "{{baseUrl}}/users/{{userId}}" }
+          "name": "Delete client",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/clients/{{clientId}}" }
         }
       ]
     },
@@ -82,11 +82,11 @@
           "request": { "method": "GET", "url": "{{baseUrl}}/addresses/{{addressId}}" }
         },
         {
-          "name": "Get addresses by user",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/addresses" }
+          "name": "Get addresses by client",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients/{{clientId}}/addresses" }
         },
         {
-          "name": "Create address for user",
+          "name": "Create address for client",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
@@ -94,7 +94,7 @@
               "mode": "raw",
               "raw": "{\n  \"name\": \"Casa\",\n  \"address\": \"Av. Siempre Viva 123\",\n  \"city\": \"Buenos Aires\",\n  \"state\": \"Buenos Aires\",\n  \"postalCode\": \"C1000\",\n  \"phone\": \"+5491122334455\"\n}"
             },
-            "url": "{{baseUrl}}/users/{{userId}}/addresses"
+            "url": "{{baseUrl}}/clients/{{clientId}}/addresses"
           }
         },
         {
@@ -221,11 +221,11 @@
           "request": { "method": "GET", "url": "{{baseUrl}}/wishlists/{{wishlistId}}" }
         },
         {
-          "name": "Get wishlist by user",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/wishlist" }
+          "name": "Get wishlist by client",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients/{{clientId}}/wishlist" }
         },
         {
-          "name": "Create wishlist for user",
+          "name": "Create wishlist for client",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
@@ -233,7 +233,7 @@
               "mode": "raw",
               "raw": "{\n  \"gameIds\": [{{gameId}}]\n}"
             },
-            "url": "{{baseUrl}}/users/{{userId}}/wishlist"
+            "url": "{{baseUrl}}/clients/{{clientId}}/wishlist"
           }
         },
         {
@@ -268,19 +268,19 @@
           "request": { "method": "GET", "url": "{{baseUrl}}/orders/{{orderId}}" }
         },
         {
-          "name": "Get orders by user",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/orders" }
+          "name": "Get orders by client",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients/{{clientId}}/orders" }
         },
         {
-          "name": "Get recent orders by user",
-          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}/orders/recent" }
+          "name": "Get recent orders by client",
+          "request": { "method": "GET", "url": "{{baseUrl}}/clients/{{clientId}}/orders/recent" }
         },
         {
           "name": "Get order by payment id",
           "request": { "method": "GET", "url": "{{baseUrl}}/orders/payment/{{paymentId}}" }
         },
         {
-          "name": "Create order for user",
+          "name": "Create order for client",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
@@ -288,7 +288,7 @@
               "mode": "raw",
               "raw": "{\n  \"totalPayment\": 119.98,\n  \"paymentId\": \"PAY-001\",\n  \"shippingName\": \"Player One\",\n  \"shippingAddress\": \"Av. Siempre Viva 123\",\n  \"shippingCity\": \"Buenos Aires\",\n  \"shippingState\": \"Buenos Aires\",\n  \"shippingPostalCode\": \"C1000\",\n  \"shippingPhone\": \"+5491122334455\"\n}"
             },
-            "url": "{{baseUrl}}/users/{{userId}}/orders"
+            "url": "{{baseUrl}}/clients/{{clientId}}/orders"
           }
         },
         {

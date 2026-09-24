@@ -1,10 +1,10 @@
 package com.example.gaming_ecomerce.service;
 
 import com.example.gaming_ecomerce.model.Game;
-import com.example.gaming_ecomerce.model.User;
+import com.example.gaming_ecomerce.model.Client;
 import com.example.gaming_ecomerce.model.Wishlist;
 import com.example.gaming_ecomerce.repository.GameRepository;
-import com.example.gaming_ecomerce.repository.UserRepository;
+import com.example.gaming_ecomerce.repository.ClientRepository;
 import com.example.gaming_ecomerce.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +17,12 @@ import java.util.Optional;
 public class WishlistService {
 
     private final WishlistRepository wishlistRepository;
-    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
     private final GameRepository gameRepository;
 
-    public WishlistService(WishlistRepository wishlistRepository, UserRepository userRepository, GameRepository gameRepository) {
+    public WishlistService(WishlistRepository wishlistRepository, ClientRepository clientRepository, GameRepository gameRepository) {
         this.wishlistRepository = wishlistRepository;
-        this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
         this.gameRepository = gameRepository;
     }
 
@@ -34,15 +34,15 @@ public class WishlistService {
         return wishlistRepository.findById(id);
     }
 
-    public Optional<Wishlist> findByUserId(Long userId) {
-        return wishlistRepository.findByUserId(userId);
+    public Optional<Wishlist> findByClientId(Long clientId) {
+        return wishlistRepository.findByClientId(clientId);
     }
 
     @Transactional
-    public Wishlist save(Long userId, Wishlist wishlist) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + userId));
-        wishlist.setUser(user);
+    public Wishlist save(Long clientId, Wishlist wishlist) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con id: " + clientId));
+        wishlist.setClient(client);
         return wishlistRepository.save(wishlist);
     }
 
