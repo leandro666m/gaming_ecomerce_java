@@ -1,4 +1,8 @@
 $kind: http-request
 url: "{{baseUrl}}/games"
 method: GET
+scripts:
+  - type: afterResponse
+    code: ""
+    language: text/javascript
 order: 1000

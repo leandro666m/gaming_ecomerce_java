@@ -9,8 +9,12 @@ variables:
   wishlistId: "1"
   orderId: "1"
   orderItemId: "1"
+  userId: "1"
   username: player01
   email: player01@example.com
+  loginEmail: player01@example.com
+  loginPassword: secret123
+  csrfToken: ""
   platformSlug: playstation-5
   gameSlug: the-last-of-us-part-ii
   paymentId: PAY-001

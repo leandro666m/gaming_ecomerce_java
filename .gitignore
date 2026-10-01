@@ -35,3 +35,6 @@ build/
 
 ### Image Files ###
 src/main/resources/static/media
+
+/postman
+./postman

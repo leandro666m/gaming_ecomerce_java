@@ -3,20 +3,371 @@ url: "{{baseUrl}}/platforms/{{platformId}}/games"
 method: POST
 headers:
   Content-Type: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      const games = [
+        {
+          "title": "God of War",
+          "price": 49.99,
+          "discount": 15,
+          "releaseDate": "2022-01-14",
+          "video": "https://www.youtube.com/watch?v=EE-4GvjKcfs",
+          "slug": "God-of-War",
+          "summary": "Kratos inicia un viaje nórdico junto a Atreus, enfrentando dioses y bestias en una historia épica de redención y paternidad.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 1
+        },
+        {
+          "title": "Horizon Forbidden West",
+          "price": 59.99,
+          "discount": 10,
+          "releaseDate": "2024-03-21",
+          "video": "https://www.youtube.com/watch?v=LqBcNXaEArY",
+          "slug": "Horizon-Forbidden-West",
+          "summary": "Aloy explora una frontera postapocalíptica llena de máquinas colosales para salvar la vida en la Tierra.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 1
+        },
+        {
+          "title": "Ghost of Tsushima",
+          "price": 59.99,
+          "discount": 0,
+          "releaseDate": "2024-05-16",
+          "video": "https://www.youtube.com/watch?v=IQ1dCxcSNRM",
+          "slug": "Ghost-of-Tsushima",
+          "summary": "Un samurái abandona su código para proteger su isla de una invasión mongola convirtiéndose en un fantasma.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 1
+        },
+        {
+          "title": "The Last of Us Part I",
+          "price": 69.99,
+          "discount": 20,
+          "releaseDate": "2023-03-28",
+          "video": "https://www.youtube.com/watch?v=W2Wnvkj15Fc",
+          "slug": "The-Last-of-Us-Part-I",
+          "summary": "Joel y Ellie atraviesan un Estados Unidos devastado por un hongo parasitario, enfrentando peligros humanos y naturales.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 1
+        },
+        {
+          "title": "Returnal",
+          "price": 59.99,
+          "discount": 5,
+          "releaseDate": "2024-02-27",
+          "video": "https://www.youtube.com/watch?v=OvDrX0AAH6Q",
+          "slug": "Returnal",
+          "summary": "Una astronauta queda atrapada en un ciclo temporal en un planeta alienígena hostil, luchando por escapar.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 1
+        },
+        {
+          "title": "Halo Infinite",
+          "price": 59.99,
+          "discount": 0,
+          "releaseDate": "2021-12-08",
+          "video": "https://www.youtube.com/watch?v=PyMlV5HRW0M",
+          "slug": "Halo-Infinite",
+          "summary": "El Jefe Maestro regresa para enfrentar a los Banished en un anillo Halo y restaurar la esperanza humana.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 4
+        },
+        {
+          "title": "Forza Horizon 5",
+          "price": 59.99,
+          "discount": 25,
+          "releaseDate": "2021-11-09",
+          "video": "https://www.youtube.com/watch?v=FYH9n37d7EE",
+          "slug": "Forza-Horizon-5",
+          "summary": "Corre por un México vibrante con cientos de autos en un mundo abierto lleno de eventos.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 4
+        },
+        {
+          "title": "Starfield",
+          "price": 69.99,
+          "discount": 15,
+          "releaseDate": "2023-09-06",
+          "video": "https://www.youtube.com/watch?v=pBy1zgt0PMc",
+          "slug": "Starfield",
+          "summary": "Explora miles de planetas en una odisea espacial donde construyes naves y decides el destino de la galaxia.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 4
+        },
+        {
+          "title": "Gears 5",
+          "price": 39.99,
+          "discount": 30,
+          "releaseDate": "2019-09-06",
+          "video": "https://www.youtube.com/watch?v=I2yA1__dbs0",
+          "slug": "Gears-5",
+          "summary": "Kait Diaz descubre sus orígenes y lidera un escuadrón para detener a la Horda Locust.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 4
+        },
+        {
+          "title": "Sea of Thieves",
+          "price": 39.99,
+          "discount": 10,
+          "releaseDate": "2018-03-20",
+          "video": "https://www.youtube.com/watch?v=r5JIBaasuE8",
+          "slug": "Sea-of-Thieves",
+          "summary": "Forma una tripulación pirata en alta mar, busca tesoros y combate en un mundo marítimo abierto.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 4
+        },
+        {
+          "title": "Cyberpunk 2077",
+          "price": 59.99,
+          "discount": 50,
+          "releaseDate": "2020-12-10",
+          "video": "https://www.youtube.com/watch?v=LembwKDo1Dk",
+          "slug": "Cyberpunk-2077",
+          "summary": "En Night City, el mercenario V busca la inmortalidad entre conspiraciones corporativas y conflictos de bandas.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 3
+        },
+        {
+          "title": "Elden Ring",
+          "price": 59.99,
+          "discount": 0,
+          "releaseDate": "2022-02-25",
+          "video": "https://www.youtube.com/watch?v=E3Huy2Krs-v",
+          "slug": "Elden-Ring",
+          "summary": "Un desterrado busca convertirse en Elden Lord enfrentando jefes colosales en un reino oscuro.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 3
+        },
+        {
+          "title": "Baldur's Gate 3",
+          "price": 59.99,
+          "discount": 10,
+          "releaseDate": "2023-08-03",
+          "video": "https://www.youtube.com/watch?v=1T22wNvoNiU",
+          "slug": "Baldurs-Gate-3",
+          "summary": "Aventureros resisten una invasión de Illithids y evitan convertirse en monstruos con decisiones que moldean el mundo.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 3
+        },
+        {
+          "title": "Counter-Strike 2",
+          "price": 0,
+          "discount": 0,
+          "releaseDate": "2023-09-27",
+          "video": "https://www.youtube.com/watch?v=nSE38P0enYo",
+          "slug": "Counter-Strike-2",
+          "summary": "Shooter táctico renovado con mecánicas de humo dinámico y competencia pura.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 3
+        },
+        {
+          "title": "Half-Life: Alyx",
+          "price": 59.99,
+          "discount": 20,
+          "releaseDate": "2020-03-23",
+          "video": "https://www.youtube.com/watch?v=O2W0N3uKXm0",
+          "slug": "Half-Life-Alyx",
+          "summary": "Alyx Vance lucha contra la Alianza en Ciudad 17 con física inmersiva en realidad virtual.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 3
+        },
+        {
+          "title": "Hades",
+          "price": 24.99,
+          "discount": 0,
+          "releaseDate": "2020-09-17",
+          "video": "https://www.youtube.com/watch?v=91Z9QOW9J2k",
+          "slug": "Hades",
+          "summary": "Zagreus intenta escapar del inframundo enfrentando dioses y criaturas en un roguelike frenético.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 2
+        },
+        {
+          "title": "Hollow Knight",
+          "price": 14.99,
+          "discount": 10,
+          "releaseDate": "2018-06-12",
+          "video": "https://www.youtube.com/watch?v=UAO2urG23S4",
+          "slug": "Hollow-Knight",
+          "summary": "Un caballero sin memoria explora Hallownest, un reino subterráneo devastado por una plaga.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 2
+        },
+        {
+          "title": "Stardew Valley",
+          "price": 14.99,
+          "discount": 0,
+          "releaseDate": "2016-02-26",
+          "video": "https://www.youtube.com/watch?v=ot7uXNQskfw",
+          "slug": "Stardew-Valley",
+          "summary": "Reconstruyes una granja heredada cultivando, criando animales y forjando relaciones con vecinos.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 2
+        },
+        {
+          "title": "Cuphead",
+          "price": 19.99,
+          "discount": 15,
+          "releaseDate": "2017-09-29",
+          "video": "https://www.youtube.com/watch?v=NN-9SQXoi50",
+          "slug": "Cuphead",
+          "summary": "Dos hermanos con cuerpo de taza enfrentan jefes colosales en plataformas inspiradas en animación clásica.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 2
+        },
+        {
+          "title": "Celeste",
+          "price": 19.99,
+          "discount": 20,
+          "releaseDate": "2018-01-25",
+          "video": "https://www.youtube.com/watch?v=io7BEFa6VjI",
+          "slug": "Celeste",
+          "summary": "Madeline escala una montaña mientras lucha contra su ansiedad en un plataformas con historia íntima.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 2
+        },
+        {
+          "title": "Sonic Frontiers",
+          "price": 59.99,
+          "discount": 30,
+          "releaseDate": "2022-11-08",
+          "video": "https://www.youtube.com/watch?v=Ull3P0NIIuo",
+          "slug": "Sonic-Frontiers",
+          "summary": "Sonic corre a velocidades supersónicas en zonas misteriosas buscando los Chaos Emeralds.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 5
+        },
+        {
+          "title": "Like a Dragon: Ishin!",
+          "price": 49.99,
+          "discount": 15,
+          "releaseDate": "2023-02-21",
+          "video": "https://www.youtube.com/watch?v=0d8f2I1sGLs",
+          "slug": "Like-a-Dragon-Ishin",
+          "summary": "Un samurái exiliado busca justicia en el Japón del período Bakumatsu entre espadas y drama histórico.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 5
+        },
+        {
+          "title": "Persona 5 Royal",
+          "price": 59.99,
+          "discount": 25,
+          "releaseDate": "2022-10-21",
+          "video": "https://www.youtube.com/watch?v=yciKz9zS1Yg",
+          "slug": "Persona-5-Royal",
+          "summary": "Estudiantes roban corazones corruptos entrando al Metaverso en un RPG con vida escolar.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 5
+        },
+        {
+          "title": "Bayonetta",
+          "price": 19.99,
+          "discount": 40,
+          "releaseDate": "2017-04-11",
+          "video": "https://www.youtube.com/watch?v=JVWtC6QSpE4",
+          "slug": "Bayonetta",
+          "summary": "Una bruja angelical destruye ángeles y demonios con combos espectaculares y armas en los talones.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 5
+        },
+        {
+          "title": "Total War: WARHAMMER III",
+          "price": 59.99,
+          "discount": 10,
+          "releaseDate": "2022-02-17",
+          "video": "https://www.youtube.com/watch?v=1u_nLEdmvAk",
+          "slug": "Total-War-WARHAMMER-III",
+          "summary": "Dirige ejércitos de fantasía épica y lucha en campañas estratégicas con dragones y magia oscura.",
+          "cover": "",
+          "wallpaper": "",
+          "screenshots": [],
+          "platformId": 5
+        }
+      ];
+
+      const baseUrl = pm.collectionVariables.get("baseUrl") || pm.environment.get("baseUrl");
+      let completed = 0;
+      let errors = [];
+
+      games.forEach((game, index) => {
+        const url = `${baseUrl}/platforms/${game.platformId}/games`;
+        pm.sendRequest(
+          {
+            url: url,
+            method: "POST",
+            header: { "Content-Type": "application/json" },
+            body: { mode: "raw", raw: JSON.stringify(game) }
+          },
+          (err, res) => {
+            completed++;
+            if (err) {
+              errors.push(`[${game.title}] Error: ${err}`);
+            } else if (res.code >= 400) {
+              errors.push(`[${game.title}] HTTP ${res.code}: ${res.text()}`);
+            } else {
+              console.log(`✅ [${index + 1}/${games.length}] ${game.title} → ${res.code}`);
+            }
+            if (completed === games.length) {
+              if (errors.length > 0) {
+                console.warn("⚠️ Errores:\n" + errors.join("\n"));
+              } else {
+                console.log("🎮 Todos los juegos insertados correctamente.");
+              }
+            }
+          }
+        );
+      });
+    language: text/javascript
 body:
-  type: text
-  content: |-
-    {
-      "title": "The Last of Us Part II",
-      "slug": "the-last-of-us-part-ii",
-      "price": 59.99,
-      "summary": "Action-adventure game",
-      "video": "https://example.com/video",
-      "cover": "https://example.com/cover.jpg",
-      "wallpaper": "https://example.com/wallpaper.jpg",
-      "screenshots": ["https://example.com/screenshot-1.jpg"],
-      "discount": 0,
-      "releaseDate": "2020-06-19",
-      "platformId": {{platformId}}
-    }
+  type: json
+  content: ""
 order: 5000
