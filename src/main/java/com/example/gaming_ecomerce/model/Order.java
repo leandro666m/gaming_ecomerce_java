@@ -23,7 +23,7 @@ public class Order {
     @Column(name = "total_payment", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPayment;
 
-    @Column(name = "payment_id")
+    @Column(name = "payment_id", unique = true)
     private String idPayment;
 
     @Column(name = "shipping_name")

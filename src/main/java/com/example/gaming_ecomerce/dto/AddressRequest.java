@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddressRequest {
 
+    @NotBlank(message = "El título de la dirección es obligatorio")
+    @Size(max = 100, message = "El título no puede exceder 100 caracteres")
+    private String title;
+
     @NotBlank(message = "El nombre de la dirección es obligatorio")
     @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
     private String name;

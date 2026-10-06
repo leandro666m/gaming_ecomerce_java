@@ -47,6 +47,7 @@ public class AddressService {
                 .orElseThrow(() -> new IllegalArgumentException("Dirección no encontrada con id: " + id));
 
         address.setName(updatedAddress.getName());
+        address.setTitle(updatedAddress.getTitle());
         address.setAddress(updatedAddress.getAddress());
         address.setCity(updatedAddress.getCity());
         address.setState(updatedAddress.getState());

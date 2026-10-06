@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.gaming_ecomerce.model.User;
+import com.example.gaming_ecomerce.model.Client;
+import com.example.gaming_ecomerce.repository.ClientRepository;
 import com.example.gaming_ecomerce.repository.UserRepository;
 import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
@@ -40,6 +42,9 @@ class SecurityAuthorizationTests {
     @Autowired
     private UserRepository userRepository;
 
+        @Autowired
+        private ClientRepository clientRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -47,6 +52,13 @@ class SecurityAuthorizationTests {
     void createAccountsForMockedUsers() {
         resetTestUser("user", "test-user@example.com");
         resetTestUser("admin", "test-admin@example.com");
+                Client client = clientRepository.findByEmail("test-client@example.com").orElseGet(Client::new);
+                client.setUsername("test-client");
+                client.setEmail("test-client@example.com");
+                client.setPassword(passwordEncoder.encode("test-password"));
+                client.setFirstName("Test");
+                client.setLastName("Client");
+                clientRepository.save(client);
     }
 
     @Test
@@ -72,6 +84,57 @@ class SecurityAuthorizationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user@example.com", roles = "USER")
+    void authenticatedDashboardUserCannotAccessCustomerResources() throws Exception {
+        mockMvc.perform(get("/api/clients/1/addresses"))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/clients/1/wishlist"))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/clients/1/orders"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "test-client@example.com", roles = "USER")
+    void customerCannotReadAnotherCustomersResources() throws Exception {
+        Client client = clientRepository.findByEmail("test-client@example.com").orElseThrow();
+        mockMvc.perform(get("/api/clients/{id}/addresses", client.getId() + 1))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/clients/{id}/wishlist", client.getId() + 1))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/clients/{id}/orders", client.getId() + 1))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void registeringCustomerHashesPasswordAndCustomerCanStartSession() throws Exception {
+        mockMvc.perform(post("/api/clients")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"store-customer\",\"email\":\"store-customer@example.com\",\"password\":\"store-password\",\"firstName\":\"Store\",\"lastName\":\"Customer\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.email").value("store-customer@example.com"));
+
+        Client client = clientRepository.findByEmail("store-customer@example.com").orElseThrow();
+        org.junit.jupiter.api.Assertions.assertTrue(passwordEncoder.matches("store-password", client.getPassword()));
+        org.junit.jupiter.api.Assertions.assertNotEquals("store-password", client.getPassword());
+
+        var loginResult = mockMvc.perform(post("/api/auth/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"store-customer@example.com\",\"password\":\"store-password\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(client.getId()))
+                .andExpect(jsonPath("$.role").value("CLIENT"))
+                .andReturn();
+
+        mockMvc.perform(get("/api/auth/me")
+                        .session((MockHttpSession) loginResult.getRequest().getSession(false)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("store-customer@example.com"));
     }
 
     @Test

@@ -4,9 +4,11 @@ import com.example.gaming_ecomerce.dto.AddressRequest;
 import com.example.gaming_ecomerce.dto.response.AddressResponse;
 import com.example.gaming_ecomerce.model.Address;
 import com.example.gaming_ecomerce.service.AddressService;
+import com.example.gaming_ecomerce.service.ClientOwnershipService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +18,11 @@ import java.util.List;
 public class AddressController {
 
     private final AddressService addressService;
+    private final ClientOwnershipService clientOwnershipService;
 
-    public AddressController(AddressService addressService) {
+    public AddressController(AddressService addressService, ClientOwnershipService clientOwnershipService) {
         this.addressService = addressService;
+        this.clientOwnershipService = clientOwnershipService;
     }
 
     @GetMapping("/addresses")
@@ -29,7 +33,8 @@ public class AddressController {
     }
 
     @GetMapping("/addresses/{id}")
-    public ResponseEntity<AddressResponse> getAddressById(@PathVariable Long id) {
+    public ResponseEntity<AddressResponse> getAddressById(@PathVariable Long id, Authentication authentication) {
+        clientOwnershipService.requireAddress(authentication, id);
         return addressService.findById(id)
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
@@ -37,16 +42,19 @@ public class AddressController {
     }
 
     @GetMapping("/clients/{clientId}/addresses")
-    public ResponseEntity<List<AddressResponse>> getAddressesByClient(@PathVariable Long clientId) {
+    public ResponseEntity<List<AddressResponse>> getAddressesByClient(@PathVariable Long clientId, Authentication authentication) {
+        clientOwnershipService.requireClient(authentication, clientId);
         return ResponseEntity.ok(addressService.findByClientId(clientId).stream()
                 .map(this::toResponse)
                 .toList());
     }
 
     @PostMapping("/clients/{clientId}/addresses")
-    public ResponseEntity<AddressResponse> createAddress(@PathVariable Long clientId, @Valid @RequestBody AddressRequest request) {
+    public ResponseEntity<AddressResponse> createAddress(@PathVariable Long clientId, @Valid @RequestBody AddressRequest request, Authentication authentication) {
+        clientOwnershipService.requireClient(authentication, clientId);
         try {
             Address address = new Address();
+            address.setTitle(request.getTitle());
             address.setName(request.getName());
             address.setAddress(request.getAddress());
             address.setCity(request.getCity());
@@ -60,9 +68,11 @@ public class AddressController {
     }
 
     @PutMapping("/addresses/{id}")
-    public ResponseEntity<AddressResponse> updateAddress(@PathVariable Long id, @Valid @RequestBody AddressRequest request) {
+    public ResponseEntity<AddressResponse> updateAddress(@PathVariable Long id, @Valid @RequestBody AddressRequest request, Authentication authentication) {
+        clientOwnershipService.requireAddress(authentication, id);
         try {
             Address address = new Address();
+            address.setTitle(request.getTitle());
             address.setName(request.getName());
             address.setAddress(request.getAddress());
             address.setCity(request.getCity());
@@ -76,7 +86,8 @@ public class AddressController {
     }
 
     @DeleteMapping("/addresses/{id}")
-    public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long id, Authentication authentication) {
+        clientOwnershipService.requireAddress(authentication, id);
         if (addressService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -87,6 +98,7 @@ public class AddressController {
     private AddressResponse toResponse(Address address) {
         return new AddressResponse(
                 address.getId(),
+            address.getTitle(),
                 address.getName(),
                 address.getAddress(),
                 address.getCity(),

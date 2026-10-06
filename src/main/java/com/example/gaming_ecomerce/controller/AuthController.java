@@ -2,7 +2,9 @@ package com.example.gaming_ecomerce.controller;
 
 import com.example.gaming_ecomerce.dto.LoginRequest;
 import com.example.gaming_ecomerce.dto.response.UserResponse;
+import com.example.gaming_ecomerce.model.Client;
 import com.example.gaming_ecomerce.model.User;
+import com.example.gaming_ecomerce.repository.ClientRepository;
 import com.example.gaming_ecomerce.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,16 +31,19 @@ public class AuthController {
     private final SecurityContextRepository securityContextRepository;
     private final CsrfTokenRepository csrfTokenRepository;
     private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
     public AuthController(
             AuthenticationManager authenticationManager,
             SecurityContextRepository securityContextRepository,
             CsrfTokenRepository csrfTokenRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            ClientRepository clientRepository) {
         this.authenticationManager = authenticationManager;
         this.securityContextRepository = securityContextRepository;
         this.csrfTokenRepository = csrfTokenRepository;
         this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
     }
 
     @GetMapping("/csrf")
@@ -68,16 +73,12 @@ public class AuthController {
         securityContextRepository.saveContext(context, servletRequest, servletResponse);
         csrfTokenRepository.saveToken(null, servletRequest, servletResponse);
 
-        User user = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new AuthenticationServiceException("El usuario autenticado ya no existe."));
-        return ResponseEntity.ok(toResponse(user));
+        return ResponseEntity.ok(toResponse(authentication.getName()));
     }
 
     @GetMapping("/me")
     public UserResponse currentUser(Authentication authentication) {
-        User user = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new AuthenticationServiceException("El usuario autenticado ya no existe."));
-        return toResponse(user);
+        return toResponse(authentication.getName());
     }
 
     @PostMapping("/logout")
@@ -90,15 +91,20 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    private UserResponse toResponse(User user) {
+    private UserResponse toResponse(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user != null) {
+            return new UserResponse(
+                    user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(),
+                    user.getRole(), user.isActive(),
+                    user.getCreatedAt() != null ? user.getCreatedAt().toString() : null,
+                    user.getUpdatedAt() != null ? user.getUpdatedAt().toString() : null);
+        }
+
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new AuthenticationServiceException("El usuario autenticado ya no existe."));
         return new UserResponse(
-                user.getId(),
-                user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getRole(),
-                user.isActive(),
-                user.getCreatedAt() != null ? user.getCreatedAt().toString() : null,
-                user.getUpdatedAt() != null ? user.getUpdatedAt().toString() : null);
+                client.getId(), client.getEmail(), client.getFirstName(), client.getLastName(),
+                "CLIENT", true, null, null);
     }
 }

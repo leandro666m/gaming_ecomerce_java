@@ -56,6 +56,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/csrf", "/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/**").authenticated()
+                        .requestMatchers("/api/checkout/**").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/api/clients").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/clients").hasRole("ADMIN")
+                    .requestMatchers("/api/clients/**").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/addresses", "/api/wishlists", "/api/orders", "/api/order-items").hasRole("ADMIN")
+                    .requestMatchers("/api/addresses/**", "/api/wishlists/**", "/api/orders/**", "/api/order-items/**").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/games/*/order-items").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/games/**", "/api/platforms/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/games/**", "/api/platforms/**").hasRole("ADMIN")
@@ -107,7 +114,7 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource(
-            @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:4173}") String allowedOrigins) {
+            @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174}") String allowedOrigins) {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.stream(allowedOrigins.split(",")).map(String::trim).toList());
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -126,6 +133,12 @@ public class SecurityConfig {
         }
 
         return requestUri.startsWith("/api/auth/")
+            || requestUri.startsWith("/api/clients")
+            || requestUri.startsWith("/api/addresses")
+            || requestUri.startsWith("/api/wishlists")
+            || requestUri.startsWith("/api/orders")
+            || requestUri.startsWith("/api/order-items")
+                || requestUri.startsWith("/api/checkout/")
                 || requestUri.equals("/api/users")
                 || requestUri.startsWith("/api/users/")
                 || requestUri.equals("/api/platforms")

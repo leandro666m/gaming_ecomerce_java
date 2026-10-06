@@ -6,9 +6,11 @@ import com.example.gaming_ecomerce.dto.response.OrderResponse;
 import com.example.gaming_ecomerce.model.Order;
 import com.example.gaming_ecomerce.model.OrderItem;
 import com.example.gaming_ecomerce.service.OrderService;
+import com.example.gaming_ecomerce.service.ClientOwnershipService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +20,11 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ClientOwnershipService clientOwnershipService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, ClientOwnershipService clientOwnershipService) {
         this.orderService = orderService;
+        this.clientOwnershipService = clientOwnershipService;
     }
 
     @GetMapping("/orders")
@@ -31,7 +35,8 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id, Authentication authentication) {
+        clientOwnershipService.requireOrder(authentication, id);
         return orderService.findById(id)
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
@@ -39,29 +44,34 @@ public class OrderController {
     }
 
     @GetMapping("/clients/{clientId}/orders")
-    public ResponseEntity<List<OrderResponse>> getOrdersByClient(@PathVariable Long clientId) {
+    public ResponseEntity<List<OrderResponse>> getOrdersByClient(@PathVariable Long clientId, Authentication authentication) {
+        clientOwnershipService.requireClient(authentication, clientId);
         return ResponseEntity.ok(orderService.findByClientId(clientId).stream()
                 .map(this::toResponse)
                 .toList());
     }
 
     @GetMapping("/clients/{clientId}/orders/recent")
-    public ResponseEntity<List<OrderResponse>> getRecentOrdersByClient(@PathVariable Long clientId) {
+    public ResponseEntity<List<OrderResponse>> getRecentOrdersByClient(@PathVariable Long clientId, Authentication authentication) {
+        clientOwnershipService.requireClient(authentication, clientId);
         return ResponseEntity.ok(orderService.findByClientIdOrderByIdDesc(clientId).stream()
                 .map(this::toResponse)
                 .toList());
     }
 
     @GetMapping("/orders/payment/{idPayment}")
-    public ResponseEntity<OrderResponse> getOrderByPaymentId(@PathVariable String idPayment) {
-        return orderService.findByIdPayment(idPayment)
+    public ResponseEntity<OrderResponse> getOrderByPaymentId(@PathVariable String idPayment, Authentication authentication) {
+        var order = orderService.findByIdPayment(idPayment);
+        order.ifPresent(value -> clientOwnershipService.requireOrder(authentication, value.getId()));
+        return order
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/clients/{clientId}/orders")
-    public ResponseEntity<OrderResponse> createOrder(@PathVariable Long clientId, @Valid @RequestBody OrderRequest request) {
+    public ResponseEntity<OrderResponse> createOrder(@PathVariable Long clientId, @Valid @RequestBody OrderRequest request, Authentication authentication) {
+        clientOwnershipService.requireClient(authentication, clientId);
         try {
             Order order = new Order();
             order.setTotalPayment(request.getTotalPayment());
@@ -79,7 +89,8 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{id}")
-    public ResponseEntity<OrderResponse> updateOrder(@PathVariable Long id, @Valid @RequestBody OrderRequest request) {
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable Long id, @Valid @RequestBody OrderRequest request, Authentication authentication) {
+        clientOwnershipService.requireOrder(authentication, id);
         try {
             Order order = new Order();
             order.setTotalPayment(request.getTotalPayment());
@@ -97,7 +108,8 @@ public class OrderController {
     }
 
     @DeleteMapping("/orders/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id, Authentication authentication) {
+        clientOwnershipService.requireOrder(authentication, id);
         if (orderService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }

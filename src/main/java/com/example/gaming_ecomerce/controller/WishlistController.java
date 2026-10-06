@@ -4,9 +4,11 @@ import com.example.gaming_ecomerce.dto.WishlistRequest;
 import com.example.gaming_ecomerce.dto.response.WishlistResponse;
 import com.example.gaming_ecomerce.model.Wishlist;
 import com.example.gaming_ecomerce.service.WishlistService;
+import com.example.gaming_ecomerce.service.ClientOwnershipService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +18,11 @@ import java.util.List;
 public class WishlistController {
 
     private final WishlistService wishlistService;
+    private final ClientOwnershipService clientOwnershipService;
 
-    public WishlistController(WishlistService wishlistService) {
+    public WishlistController(WishlistService wishlistService, ClientOwnershipService clientOwnershipService) {
         this.wishlistService = wishlistService;
+        this.clientOwnershipService = clientOwnershipService;
     }
 
     @GetMapping("/wishlists")
@@ -29,7 +33,8 @@ public class WishlistController {
     }
 
     @GetMapping("/wishlists/{id}")
-    public ResponseEntity<WishlistResponse> getWishlistById(@PathVariable Long id) {
+    public ResponseEntity<WishlistResponse> getWishlistById(@PathVariable Long id, Authentication authentication) {
+        clientOwnershipService.requireWishlist(authentication, id);
         return wishlistService.findById(id)
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
@@ -37,7 +42,8 @@ public class WishlistController {
     }
 
     @GetMapping("/clients/{clientId}/wishlist")
-    public ResponseEntity<WishlistResponse> getWishlistByClient(@PathVariable Long clientId) {
+    public ResponseEntity<WishlistResponse> getWishlistByClient(@PathVariable Long clientId, Authentication authentication) {
+        clientOwnershipService.requireClient(authentication, clientId);
         return wishlistService.findByClientId(clientId)
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
@@ -45,7 +51,8 @@ public class WishlistController {
     }
 
     @PostMapping("/clients/{clientId}/wishlist")
-    public ResponseEntity<WishlistResponse> createWishlist(@PathVariable Long clientId, @Valid @RequestBody WishlistRequest request) {
+    public ResponseEntity<WishlistResponse> createWishlist(@PathVariable Long clientId, @Valid @RequestBody WishlistRequest request, Authentication authentication) {
+        clientOwnershipService.requireClient(authentication, clientId);
         try {
             Wishlist wishlist = new Wishlist();
             if (request.getGameIds() != null && !request.getGameIds().isEmpty()) {
@@ -63,7 +70,8 @@ public class WishlistController {
     }
 
     @PostMapping("/wishlists/{wishlistId}/games/{gameId}")
-    public ResponseEntity<WishlistResponse> addGameToWishlist(@PathVariable Long wishlistId, @PathVariable Long gameId) {
+    public ResponseEntity<WishlistResponse> addGameToWishlist(@PathVariable Long wishlistId, @PathVariable Long gameId, Authentication authentication) {
+        clientOwnershipService.requireWishlist(authentication, wishlistId);
         try {
             return ResponseEntity.ok(toResponse(wishlistService.addGame(wishlistId, gameId)));
         } catch (IllegalArgumentException e) {
@@ -72,7 +80,8 @@ public class WishlistController {
     }
 
     @DeleteMapping("/wishlists/{wishlistId}/games/{gameId}")
-    public ResponseEntity<WishlistResponse> removeGameFromWishlist(@PathVariable Long wishlistId, @PathVariable Long gameId) {
+    public ResponseEntity<WishlistResponse> removeGameFromWishlist(@PathVariable Long wishlistId, @PathVariable Long gameId, Authentication authentication) {
+        clientOwnershipService.requireWishlist(authentication, wishlistId);
         try {
             return ResponseEntity.ok(toResponse(wishlistService.removeGame(wishlistId, gameId)));
         } catch (IllegalArgumentException e) {
@@ -81,7 +90,8 @@ public class WishlistController {
     }
 
     @DeleteMapping("/wishlists/{id}")
-    public ResponseEntity<Void> deleteWishlist(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteWishlist(@PathVariable Long id, Authentication authentication) {
+        clientOwnershipService.requireWishlist(authentication, id);
         if (wishlistService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }

@@ -4,9 +4,11 @@ import com.example.gaming_ecomerce.dto.OrderItemRequest;
 import com.example.gaming_ecomerce.dto.response.OrderItemResponse;
 import com.example.gaming_ecomerce.model.OrderItem;
 import com.example.gaming_ecomerce.service.OrderItemService;
+import com.example.gaming_ecomerce.service.ClientOwnershipService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +18,11 @@ import java.util.List;
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
+    private final ClientOwnershipService clientOwnershipService;
 
-    public OrderItemController(OrderItemService orderItemService) {
+    public OrderItemController(OrderItemService orderItemService, ClientOwnershipService clientOwnershipService) {
         this.orderItemService = orderItemService;
+        this.clientOwnershipService = clientOwnershipService;
     }
 
     @GetMapping("/order-items")
@@ -29,7 +33,10 @@ public class OrderItemController {
     }
 
     @GetMapping("/order-items/{id}")
-    public ResponseEntity<OrderItemResponse> getOrderItemById(@PathVariable Long id) {
+    public ResponseEntity<OrderItemResponse> getOrderItemById(@PathVariable Long id, Authentication authentication) {
+        Long orderId = orderItemService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Línea de pedido no encontrada.")).getOrder().getId();
+        clientOwnershipService.requireOrder(authentication, orderId);
         return orderItemService.findById(id)
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
@@ -37,7 +44,8 @@ public class OrderItemController {
     }
 
     @GetMapping("/orders/{orderId}/items")
-    public ResponseEntity<List<OrderItemResponse>> getItemsByOrder(@PathVariable Long orderId) {
+    public ResponseEntity<List<OrderItemResponse>> getItemsByOrder(@PathVariable Long orderId, Authentication authentication) {
+        clientOwnershipService.requireOrder(authentication, orderId);
         return ResponseEntity.ok(orderItemService.findByOrderId(orderId).stream()
                 .map(this::toResponse)
                 .toList());
@@ -51,7 +59,8 @@ public class OrderItemController {
     }
 
     @PostMapping("/orders/{orderId}/games/{gameId}/items")
-    public ResponseEntity<OrderItemResponse> createOrderItem(@PathVariable Long orderId, @PathVariable Long gameId, @Valid @RequestBody OrderItemRequest request) {
+    public ResponseEntity<OrderItemResponse> createOrderItem(@PathVariable Long orderId, @PathVariable Long gameId, @Valid @RequestBody OrderItemRequest request, Authentication authentication) {
+        clientOwnershipService.requireOrder(authentication, orderId);
         try {
             OrderItem orderItem = new OrderItem();
             orderItem.setQuantity(request.getQuantity());
@@ -65,7 +74,10 @@ public class OrderItemController {
     }
 
     @DeleteMapping("/order-items/{id}")
-    public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id, Authentication authentication) {
+        Long orderId = orderItemService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Línea de pedido no encontrada.")).getOrder().getId();
+        clientOwnershipService.requireOrder(authentication, orderId);
         if (orderItemService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }

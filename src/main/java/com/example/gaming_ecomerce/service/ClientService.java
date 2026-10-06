@@ -2,6 +2,7 @@ package com.example.gaming_ecomerce.service;
 
 import com.example.gaming_ecomerce.model.Client;
 import com.example.gaming_ecomerce.repository.ClientRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +13,11 @@ import java.util.Optional;
 public class ClientService {
 
     private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Client> findAll() {
@@ -34,6 +37,7 @@ public class ClientService {
     }
 
     public Client save(Client client) {
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
         return clientRepository.save(client);
     }
 
@@ -44,7 +48,9 @@ public class ClientService {
 
         client.setUsername(updatedClient.getUsername());
         client.setEmail(updatedClient.getEmail());
-        client.setPassword(updatedClient.getPassword());
+        if (updatedClient.getPassword() != null && !updatedClient.getPassword().isBlank()) {
+            client.setPassword(passwordEncoder.encode(updatedClient.getPassword()));
+        }
         client.setFirstName(updatedClient.getFirstName());
         client.setLastName(updatedClient.getLastName());
 

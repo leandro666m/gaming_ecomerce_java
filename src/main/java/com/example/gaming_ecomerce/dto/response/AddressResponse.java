@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class AddressResponse {
 
     private Long id;
+    private String title;
     private String name;
     private String address;
     private String city;

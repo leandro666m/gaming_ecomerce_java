@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    boolean existsByIdPayment(String idPayment);
+
     List<Order> findByClientId(Long clientId);
 
     List<Order> findByClientIdOrderByIdDesc(Long clientId);
